@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_forex
+    description: "Cleaned forex rates from raw_forex"
+    columns:
+      - name: date
+        description: "Rate date"
+        tests:
+          - not_null
+          - unique
+      - name: usd_kes
+        description: "1 USD in KES"
+        tests:
+          - not_null
+      - name: eur_kes
+        description: "1 EUR in KES"
+        tests:
+          - not_null
+      - name: gbp_kes
+        description: "1 GBP in KES"
+        tests:
+          - not_null
