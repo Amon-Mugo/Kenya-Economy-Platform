@@ -36,6 +36,12 @@ def ingest_forex(request):
     # load to bigquery
     bq_client = bigquery.Client()
     table_id = "gcp-de-learning-498109.kenya_econ.raw_forex"
+
+    # delete existing row for this date to prevent duplicates
+    bq_client.query(
+        f"DELETE FROM `{table_id}` WHERE date = '{record['date']}'"
+    ).result()
+
     errors = bq_client.insert_rows_json(table_id, [record])
 
     if errors:
