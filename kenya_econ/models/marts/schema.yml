@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: fct_forex_daily
+    description: "Daily KES forex rates with trend indicators"
+    columns:
+      - name: date
+        description: "Date of the forex rate"
+        data_tests:
+          - not_null
+      - name: usd_kes
+        description: "USD to KES exchange rate"
+        data_tests:
+          - not_null
+      - name: eur_kes
+        description: "EUR to KES exchange rate"
+      - name: gbp_kes
+        description: "GBP to KES exchange rate"
+      - name: usd_kes_trend
+        description: "KES trend vs USD: WEAKENING, STRENGTHENING, or STABLE"
+      - name: eur_kes_trend
+        description: "KES trend vs EUR: WEAKENING, STRENGTHENING, or STABLE"
+      - name: gbp_kes_trend
+        description: "KES trend vs GBP: WEAKENING, STRENGTHENING, or STABLE"
+
+  - name: fct_commodities_daily
+    description: "Daily commodity prices with trend indicators"
+    columns:
+      - name: date
+        description: "Date of the commodity price"
+        data_tests:
+          - not_null
+      - name: commodity
+        description: "Commodity name"
+        data_tests:
+          - not_null
+      - name: price
+        description: "Commodity price"
+      - name: unit
+        description: "Unit of measurement"
+      - name: price_trend
+        description: "Price trend: RISING, FALLING, or STABLE"
