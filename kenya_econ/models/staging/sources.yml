@@ -1,9 +1,0 @@
-version: 2
-
-sources:
-  - name: kenya_econ
-    database: gcp-de-learning-498109
-    schema: kenya_econ
-    tables:
-      - name: raw_forex
-        description: "Raw forex rates ingested from open.er-api.com"

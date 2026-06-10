@@ -1,23 +1,36 @@
 version: 2
 
+sources:
+  - name: kenya_econ
+    database: gcp-de-learning-498109
+    schema: kenya_econ
+    tables:
+      - name: raw_forex
+        description: Raw forex rates ingested daily from open.er-api.com
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: ingested_at
+
 models:
   - name: stg_forex
-    description: "Cleaned forex rates from raw_forex"
+    description: Cleaned forex rates from raw_forex
     columns:
       - name: date
-        description: "Rate date"
+        description: Rate date
         tests:
           - not_null
           - unique
       - name: usd_kes
-        description: "1 USD in KES"
+        description: 1 USD in KES
         tests:
           - not_null
       - name: eur_kes
-        description: "1 EUR in KES"
+        description: 1 EUR in KES
         tests:
           - not_null
       - name: gbp_kes
-        description: "1 GBP in KES"
+        description: 1 GBP in KES
         tests:
           - not_null
