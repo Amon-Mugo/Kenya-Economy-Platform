@@ -6,7 +6,7 @@ Here is the link https://datastudio.google.com/reporting/99b3a062-2781-4e68-b979
 
 
 
-![image alt]
+![image alt](https://github.com/Amon-Mugo/Kenya-Economy-Platform/blob/98ef370f04e9553c9b43608827949ee7fdf3830b/Screenshot_2026-06-10_22-42-10.png)
 ---
 
 ## Architecture
