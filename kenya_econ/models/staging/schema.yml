@@ -13,6 +13,14 @@ sources:
             error_after: {count: 2, period: day}
           loaded_at_field: ingested_at
 
+      - name: raw_commodities
+        description: Raw commodity prices ingested daily from API Ninjas
+        config:
+          freshness:
+            warn_after: {count: 1, period: day}
+            error_after: {count: 2, period: day}
+          loaded_at_field: ingested_at
+
 models:
   - name: stg_forex
     description: Cleaned forex rates from raw_forex
@@ -32,5 +40,21 @@ models:
           - not_null
       - name: gbp_kes
         description: 1 GBP in KES
+        tests:
+          - not_null
+
+  - name: stg_commodities
+    description: Cleaned commodity prices from raw_commodities
+    columns:
+      - name: date
+        description: Price date
+        tests:
+          - not_null
+      - name: commodity
+        description: Commodity name
+        tests:
+          - not_null
+      - name: price
+        description: Commodity price
         tests:
           - not_null
