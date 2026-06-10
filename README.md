@@ -4,6 +4,9 @@ A data engineering portfolio project that builds an end-to-end pipeline tracking
 
 Here is the link https://datastudio.google.com/reporting/99b3a062-2781-4e68-b979-0f1b68959861
 
+
+
+![image alt](https://github.com/Amon-Mugo/Kenya-Economy-Platform/blob/5579d8fe46c7ef99644668994cdf6ee1920d4205/image.GJIIQ3.png)
 ---
 
 ## Architecture
