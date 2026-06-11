@@ -1,11 +1,9 @@
+
 # Kenya Economic Intelligence Platform
 
 A data engineering portfolio project that builds an end-to-end pipeline tracking forex exchange rates and commodity prices relevant to the Kenyan economy — from live API ingestion through cloud storage, transformation, and a Looker Studio dashboard.
 
 Here is the link https://datastudio.google.com/reporting/99b3a062-2781-4e68-b979-0f1b68959861
-
-
-
 
 ---
 
@@ -24,7 +22,7 @@ Cloud Function (ingest_forex)     Cloud Function (ingest_commodities)
                          │                │
                          └──────┬─────────┘
                                 ▼
-                            dbt Core
+                            dbt Core (Cloud Run Job — 10AM EAT)
                 ┌─────────────────────────────────────┐
                 │  stg_forex            (view)         │
                 │  stg_commodities      (view)         │
@@ -38,10 +36,10 @@ Cloud Function (ingest_forex)     Cloud Function (ingest_commodities)
                         Looker Studio Dashboard
 ```
 
-
 ![image alt](https://github.com/Amon-Mugo/Kenya-Economy-Platform/blob/98ef370f04e9553c9b43608827949ee7fdf3830b/Screenshot_2026-06-10_22-42-10.png)
 
 ![image alt](https://github.com/Amon-Mugo/Kenya-Economy-Platform/blob/6078f57f6eef6de591ce175153ae56704f147756/Screenshot_2026-06-10_22-42-22.png)
+
 ---
 
 ## Tech Stack
@@ -53,6 +51,9 @@ Cloud Function (ingest_forex)     Cloud Function (ingest_commodities)
 | Raw Storage | Google Cloud Storage (GCS) |
 | Data Warehouse | Google BigQuery |
 | Transformation | dbt Core 1.11 (BigQuery adapter) |
+| Containerisation | Docker |
+| Infrastructure as Code | Terraform |
+| Orchestration | Cloud Run Job |
 | Dashboard | Looker Studio |
 
 ---
@@ -102,8 +103,14 @@ Commodities pipeline:
 
 8 dbt tests passing across both pipelines. Source freshness monitoring configured for both raw tables.
 
-**Layer 5 — Dashboard**
-Looker Studio connected to `fct_forex_daily` and `fct_commodities_daily` in BigQuery.
+**Layer 5 — Orchestration (Cloud Run + Terraform)**
+dbt runs are fully automated via a Docker container deployed to Cloud Run:
+- Docker image built via Google Cloud Build and stored in Artifact Registry
+- Cloud Run Job executes `dbt run` daily at 10AM EAT triggered by Cloud Scheduler
+- All GCP infrastructure (Artifact Registry, Cloud Run Job, Cloud Scheduler) provisioned via Terraform
+
+**Layer 6 — Dashboard**
+Looker Studio connected to `fct_forex_daily` and `fct_commodities_daily` in BigQuery. Two pages: Forex rates and Commodity prices, each with time series charts, scorecards, and date range controls.
 
 ---
 
@@ -129,8 +136,14 @@ kenya-econ-platform/
 │   │   │   └── int_commodities.sql
 │   │   └── marts/
 │   │       ├── fct_forex_daily.sql
-│   │       └── fct_commodities_daily.sql
+│   │       ├── fct_commodities_daily.sql
+│   │       └── schema.yml
+│   ├── profiles.yml
 │   └── dbt_project.yml
+├── terraform/
+│   ├── main.tf                  # Artifact Registry, Cloud Run Job, Cloud Scheduler
+│   └── .terraform.lock.hcl
+├── Dockerfile                   # dbt runner container
 ├── requirements.txt
 └── .gitignore
 ```
@@ -146,7 +159,9 @@ kenya-econ-platform/
 | GCS Bucket | `gcp-de-learning-amon-kariuki` |
 | BigQuery Dataset | `kenya_econ` |
 | Cloud Functions | `ingest_forex`, `ingest_commodities` |
-| Cloud Schedulers | `forex-daily-ingest` (8AM EAT), `commodities-daily-ingest` (9AM EAT) |
+| Cloud Schedulers | `forex-daily-ingest` (8AM EAT), `commodities-daily-ingest` (9AM EAT), `dbt-daily-run` (10AM EAT) |
+| Cloud Run Job | `dbt-run-kenya-econ` |
+| Artifact Registry | `us-central1-docker.pkg.dev/gcp-de-learning-498109/dbt-runner` |
 
 ---
 
@@ -184,6 +199,14 @@ dbt test
 dbt source freshness
 ```
 
+**5. Deploy infrastructure with Terraform**
+```bash
+cd terraform
+terraform init
+terraform plan
+terraform apply
+```
+
 ---
 
 ## What I Learned
@@ -196,6 +219,9 @@ dbt source freshness
 - Declaring dbt sources with freshness monitoring to detect ingestion failures
 - Managing environment variables in Cloud Functions to avoid hardcoded secrets
 - Graceful error handling in ingestion — skipping unavailable API endpoints without failing the pipeline
+- Containerising dbt with Docker and building images via Google Cloud Build
+- Deploying and running containerised jobs on Cloud Run
+- Provisioning GCP infrastructure as code using Terraform
 
 ---
 
