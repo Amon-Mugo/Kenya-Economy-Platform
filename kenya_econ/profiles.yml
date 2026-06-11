@@ -1,0 +1,13 @@
+kenya_econ:
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: gcp-de-learning-498109
+      dataset: kenya_econ
+      location: US
+      threads: 1
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      priority: interactive
+  target: dev
