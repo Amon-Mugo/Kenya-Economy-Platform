@@ -1,7 +1,7 @@
 
 # Kenya Economic Intelligence Platform
 
-A data engineering portfolio project that builds an end-to-end pipeline tracking forex exchange rates and commodity prices relevant to the Kenyan economy — from live API ingestion through cloud storage, transformation, and a Looker Studio dashboard.
+A data engineering portfolio project that builds an end-to-end pipeline tracking forex exchange rates like  USD/KES, EUR/KES, GBP/KES and commodity prices like Coffee, Crude Oil, Corn, Cocoa, Copper, Cotton, Class 3 Milkand relevant to the Kenyan economy — from live API ingestion through cloud storage, transformation, and a Looker Studio dashboard.
 
 Here is the link https://datastudio.google.com/reporting/99b3a062-2781-4e68-b979-0f1b68959861
 
